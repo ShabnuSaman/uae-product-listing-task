@@ -1,6 +1,10 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:shimmer/shimmer.dart';
 import '../../models/product_model.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_dimens.dart';
+import '../../utils/app_strings.dart';
 
 class ProductDetailScreen extends StatelessWidget {
   final Product product;
@@ -13,7 +17,7 @@ class ProductDetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Product Details'),
+        title: const Text(AppStrings.productDetailsTitle),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -22,18 +26,18 @@ class ProductDetailScreen extends StatelessWidget {
           children: [
             _HeroImage(imageUrl: product.image),
             Padding(
-              padding: const EdgeInsets.all(20),
+              padding: AppDimens.detailContentPadding,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _CategoryChip(category: product.category),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppDimens.sp12),
                   Text(
                     product.title,
                     style: theme.textTheme.titleLarge!
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 12),
+                  const SizedBox(height: AppDimens.sp12),
                   Row(
                     children: [
                       Text(
@@ -47,17 +51,19 @@ class ProductDetailScreen extends StatelessWidget {
                       _RatingRow(rating: product.rating),
                     ],
                   ),
-                  const Divider(height: 32),
+                  const Divider(height: AppDimens.sp32),
                   Text(
-                    'Description',
+                    AppStrings.descriptionLabel,
                     style: theme.textTheme.titleMedium!
                         .copyWith(fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(height: 8),
+                  const SizedBox(height: AppDimens.sp8),
                   Text(
                     product.description,
-                    style: theme.textTheme.bodyMedium!
-                        .copyWith(height: 1.6, color: Colors.grey[700]),
+                    style: theme.textTheme.bodyMedium!.copyWith(
+                      height: 1.6,
+                      color: AppColors.textBody,
+                    ),
                   ),
                 ],
               ),
@@ -78,16 +84,21 @@ class _HeroImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      height: 300,
-      color: Colors.grey[100],
-      padding: const EdgeInsets.all(32),
+      height: AppDimens.heroImageHeight,
+      color: AppColors.imageBg,
+      padding: AppDimens.heroImagePadding,
       child: CachedNetworkImage(
         imageUrl: imageUrl,
         fit: BoxFit.contain,
-        placeholder: (context, url) =>
-            const Center(child: CircularProgressIndicator()),
-        errorWidget: (context, url, error) =>
-            const Icon(Icons.broken_image_outlined, size: 60),
+        placeholder: (context, url) => Shimmer.fromColors(
+          baseColor: AppColors.shimmerBase,
+          highlightColor: AppColors.shimmerHighlight,
+          child: Container(color: AppColors.white),
+        ),
+        errorWidget: (context, url, error) => const Icon(
+          Icons.broken_image_outlined,
+          size: AppDimens.brokenImageDetail,
+        ),
       ),
     );
   }
@@ -119,8 +130,12 @@ class _RatingRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.star_rounded, color: Colors.amber[700], size: 20),
-        const SizedBox(width: 4),
+        const Icon(
+          Icons.star_rounded,
+          color: AppColors.starColor,
+          size: AppDimens.starIconDetail,
+        ),
+        const SizedBox(width: AppDimens.sp4),
         Text(
           '${rating.rate.toStringAsFixed(1)} (${rating.count} reviews)',
           style: Theme.of(context).textTheme.bodyMedium,

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../controllers/splash_controller.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_dimens.dart';
+import '../../utils/app_strings.dart';
 import 'product_list_screen.dart';
 
 class SplashScreen extends StatelessWidget {
@@ -40,60 +43,58 @@ class _SplashBody extends StatelessWidget {
     }
 
     return Scaffold(
-      backgroundColor: const Color(0xFF3949AB),
+      backgroundColor: AppColors.splashBg,
       body: Center(
         child: TweenAnimationBuilder<double>(
           tween: Tween(begin: 0.0, end: 1.0),
           duration: const Duration(milliseconds: 900),
           curve: Curves.easeIn,
-          builder: (context, fadeValue, child) => Opacity(
-            opacity: fadeValue,
-            child: child,
-          ),
+          builder: (context, fadeValue, child) =>
+              Opacity(opacity: fadeValue, child: child),
           child: TweenAnimationBuilder<double>(
             tween: Tween(begin: 0.75, end: 1.0),
             duration: const Duration(milliseconds: 900),
             curve: Curves.easeOutBack,
-            builder: (context, scaleValue, child) => Transform.scale(
-              scale: scaleValue,
-              child: child,
-            ),
+            builder: (context, scaleValue, child) =>
+                Transform.scale(scale: scaleValue, child: child),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 96,
-                  height: 96,
+                  width: AppDimens.splashIconContainerSize,
+                  height: AppDimens.splashIconContainerSize,
                   decoration: BoxDecoration(
-                    color: Colors.white.withValues(alpha: 0.15),
+                    color: AppColors.splashText
+                        .withValues(alpha: AppColors.splashIconBgAlpha),
                     shape: BoxShape.circle,
                   ),
                   child: const Icon(
                     Icons.storefront_rounded,
-                    size: 52,
-                    color: Colors.white,
+                    size: AppDimens.splashIconSize,
+                    color: AppColors.splashText,
                   ),
                 ),
-                const SizedBox(height: 24),
+                const SizedBox(height: AppDimens.sp24),
                 const Text(
-                  'Product Store',
+                  AppStrings.appName,
                   style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 28,
+                    color: AppColors.splashText,
+                    fontSize: AppDimens.splashTitleSize,
                     fontWeight: FontWeight.bold,
                     letterSpacing: 0.5,
                   ),
                 ),
-                const SizedBox(height: 8),
+                const SizedBox(height: AppDimens.sp8),
                 Text(
-                  'Discover what you love',
+                  AppStrings.splashTagline,
                   style: TextStyle(
-                    color: Colors.white.withValues(alpha: 0.75),
-                    fontSize: 14,
+                    color: AppColors.splashText
+                        .withValues(alpha: AppColors.splashSubtitleAlpha),
+                    fontSize: AppDimens.splashSubtitleSize,
                     letterSpacing: 0.3,
                   ),
                 ),
-                const SizedBox(height: 48),
+                const SizedBox(height: AppDimens.sp48),
               ],
             ),
           ),

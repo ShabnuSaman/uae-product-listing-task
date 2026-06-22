@@ -2,6 +2,8 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:shimmer/shimmer.dart';
 import '../../models/product_model.dart';
+import '../../utils/app_colors.dart';
+import '../../utils/app_dimens.dart';
 import '../screens/product_detail_screen.dart';
 
 class ProductCard extends StatelessWidget {
@@ -15,7 +17,9 @@ class ProductCard extends StatelessWidget {
 
     return Card(
       clipBehavior: Clip.antiAlias,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.all(Radius.circular(AppDimens.cardRadius)),
+      ),
       elevation: 3,
       child: InkWell(
         onTap: () => Navigator.push(
@@ -28,22 +32,21 @@ class ProductCard extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
-              height: 100,
+              height: AppDimens.productImageHeight,
               child: _ProductImage(imageUrl: product.image),
             ),
             Expanded(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(10, 8, 10, 10),
+                padding: AppDimens.cardContentPadding,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    // Top: category + title + description
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         _CategoryChip(category: product.category),
-                        const SizedBox(height: 4),
+                        const SizedBox(height: AppDimens.sp4),
                         Text(
                           product.title,
                           maxLines: 2,
@@ -53,17 +56,16 @@ class ProductCard extends StatelessWidget {
                             height: 1.3,
                           ),
                         ),
-                        const SizedBox(height: 3),
+                        const SizedBox(height: AppDimens.sp3),
                         Text(
                           product.shortDescription,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: theme.textTheme.labelSmall!
-                              .copyWith(color: Colors.grey[600]),
+                              .copyWith(color: AppColors.textSecondary),
                         ),
                       ],
                     ),
-                    // Bottom: price + rating
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -97,18 +99,20 @@ class _ProductImage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: double.infinity,
-      color: Colors.grey[100],
-      padding: const EdgeInsets.all(12),
+      color: AppColors.imageBg,
+      padding: AppDimens.imageCardPadding,
       child: CachedNetworkImage(
         imageUrl: imageUrl,
         fit: BoxFit.contain,
         placeholder: (context, url) => Shimmer.fromColors(
-          baseColor: Colors.grey[300]!,
-          highlightColor: Colors.grey[100]!,
-          child: Container(color: Colors.white),
+          baseColor: AppColors.shimmerBase,
+          highlightColor: AppColors.shimmerHighlight,
+          child: Container(color: AppColors.white),
         ),
-        errorWidget: (context, url, error) =>
-            const Icon(Icons.broken_image_outlined, size: 36),
+        errorWidget: (context, url, error) => const Icon(
+          Icons.broken_image_outlined,
+          size: AppDimens.brokenImageCard,
+        ),
       ),
     );
   }
@@ -122,10 +126,15 @@ class _CategoryChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+      padding: const EdgeInsets.symmetric(
+        horizontal: AppDimens.sp8,
+        vertical: AppDimens.sp3,
+      ),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: const BorderRadius.all(
+          Radius.circular(AppDimens.chipRadius),
+        ),
       ),
       child: Text(
         category,
@@ -146,8 +155,12 @@ class _RatingBadge extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        Icon(Icons.star_rounded, size: 14, color: Colors.amber[700]),
-        const SizedBox(width: 2),
+        const Icon(
+          Icons.star_rounded,
+          size: AppDimens.starIconCard,
+          color: AppColors.starColor,
+        ),
+        const SizedBox(width: AppDimens.sp4),
         Text(
           rating.rate.toStringAsFixed(1),
           style: Theme.of(context).textTheme.labelSmall,
