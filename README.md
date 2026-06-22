@@ -11,6 +11,6 @@ A Flutter application built using MVC architecture and Provider.
 </p>
 
 <p align="center">
-  <img src="CategoryFilter.png" width="250">
+  <img src="screenshots/CategoryFilter.png" width="250">
   <img src="screenshots/ProductDetails.png" width="250">
 </p>
